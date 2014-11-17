@@ -3,6 +3,8 @@
 *.class
 *.o
 *.so
+*.classpath
+*.settings
 
 # Packages # 
 ############ 

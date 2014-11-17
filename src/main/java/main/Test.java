@@ -8,12 +8,7 @@ import java.util.Set;
 
 public class Test {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// ArrayList<Integer> arr = new Test().sort();
-		// System.out.println(arr);
 		String s = "mmllp";
 		s = s.substring(0, 2);
 		boolean mm = s.equalsIgnoreCase("MM");
