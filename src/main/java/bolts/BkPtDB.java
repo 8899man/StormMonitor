@@ -59,7 +59,7 @@ public class BkPtDB extends BaseRichBolt {
 				downloadToDB(timePeriod);
 			} else if (strID.equals(StreamId.SIGNALUPDATE.name())) {
 				InfoUpdate.updateBookInfo(path, itemInfo);
-			} else if (strID.equals(FName.ACTION24H.name())) {
+			} else if (strID.equals(StreamId.SIGNAL24H.name())) {
 				log.info("24Hour is coming.");
 				itemCount.clear();
 			}

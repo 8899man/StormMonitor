@@ -46,7 +46,7 @@ public class SignalUpdate extends BaseRichSpout {
 		}
 		long timedif = min - lastT;
 		lastT = min;
-		if ((timedif != 0) && (timeflag == true)) {
+		if ((timedif != 0) && timeflag) {
 			log.info("Update min:" + min + "  lastT:" + lastT + " timedif: "
 					+ timedif + "  timeflag: " + timeflag);
 			String date = fmat.format(calUp.getTime());
