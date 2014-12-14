@@ -14,6 +14,6 @@ public enum ID {
 	proCityMonthDB, proCityCleanUV, proCityDBUV, proCityCleanPV, proCityDBPV, proCityCln, 
 	proCityBook, proCityBookDB, proCityProduct, proCityProductDB, userCleanForSoft, 
 	userCleanForUV, snsfilesSpout, snsCleanForSoft, clidownCleanForSoft, snsSPLIT,
-	clidownfilesSpout, clidownSPLIT,
+	clidownfilesSpout, clidownSPLIT, delayRatio,
 	
 }

@@ -22,6 +22,7 @@ import bolts.ProvinceItemDB;
 import bolts.Total;
 import bolts.TotalDB;
 import bolts.WapDelayAve;
+import bolts.WapDelayRatio;
 import bolts.WapPVSuccessRate;
 import bolts.WapSplit;
 import bolts.WapUserClean;
@@ -33,8 +34,8 @@ public class UesWapTopo {
 		TopologyBuilder builder = new TopologyBuilder();
 		String dataPath = StormConf.UESPATH;
 		String tableName[] = StormConf.UESTABLE;
-		if (tableName.length != 8) {
-			log.error("the tableName needed 8,but there is " + tableName.length
+		if (tableName.length != 9) {
+			log.error("the tableName needed 9,but there is " + tableName.length
 					+ ".please check the configure file "
 					+ "argsTopo.properties" + ": uesTable " + "\nLine:20 or so");
 			return;
@@ -117,8 +118,13 @@ public class UesWapTopo {
 				.fieldsGrouping(ID.SPLIT.name(),
 						new Fields(FName.PAGENAME.name()))
 				.allGrouping(ID.signal15m.name(), StreamId.SIGNAL15MIN.name());
+		// 时延占比
+		builder.setBolt(ID.delayRatio.name(), new WapDelayRatio(tableName[8]), 4)
+				.fieldsGrouping(ID.SPLIT.name(),new Fields(FName.PAGENAME.name()))
+				.allGrouping(ID.signal15m.name(), StreamId.SIGNAL15MIN.name());
+
 		Config conf = new Config();
-		conf.setNumWorkers(8);
+		conf.setNumWorkers(10);
 		StormSubmitter.submitTopology(StormConf.UESTOPO, conf,
 				builder.createTopology());
 	}

@@ -13,6 +13,7 @@ import backtype.storm.tuple.Fields;
 import bolts.DelayAverage;
 import bolts.DelayInterfaceSplit;
 import bolts.InterfacePVSuccessRate;
+import bolts.SoftDelayRatio;
 
 public class SoftDelaySucc {
 	static Logger log = Logger.getLogger(SoftDelaySucc.class);
@@ -21,8 +22,8 @@ public class SoftDelaySucc {
 		TopologyBuilder builder = new TopologyBuilder();
 		String dataPath = StormConf.DELAYPATH;
 		String[] tableName = StormConf.DELAYSUCCTABLE;
-		if (tableName.length != 2) {
-			log.error("the tableName needed 2,but there is " + tableName.length
+		if (tableName.length != 3) {
+			log.error("the tableName needed 3,but there is " + tableName.length
 					+ ".please check the configure file "
 					+ "argsTopo.properties" + ": delaySuccTable "
 					+ "\nLine:15 or so");
@@ -45,9 +46,16 @@ public class SoftDelaySucc {
 				.fieldsGrouping(ID.SPLIT.name(),
 						new Fields(FName.ACTION.name()))
 				.allGrouping(ID.signal15m.name(), StreamId.SIGNAL15MIN.name());
+		
+		// 时延平均值
+		builder.setBolt(ID.delayRatio.name(), new SoftDelayRatio(tableName[2]), 4)
+				.fieldsGrouping(ID.SPLIT.name(),
+						new Fields(FName.ACTION.name()))
+				.allGrouping(ID.signal15m.name(), StreamId.SIGNAL15MIN.name());
+		
 
 		Config conf = new Config();
-		conf.setNumWorkers(2);
+		conf.setNumWorkers(3);
 		StormSubmitter.submitTopology(StormConf.DELAYSUCCTOPO, conf,
 				builder.createTopology());
 	}
