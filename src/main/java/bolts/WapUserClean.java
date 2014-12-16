@@ -36,7 +36,8 @@ public class WapUserClean extends BaseRichBolt {
 			String provinceID = input
 					.getStringByField(FName.PROVINCE_ID.name());
 			String remoteip = input.getStringByField(FName.REMOTEIP.name());
-			String firstNum = msisdn.substring(0, 1);
+			String firstNum = msisdn.length() >= 1 ? msisdn.substring(0, 1)
+					: "0";
 			Boolean isvisited;
 			if (!firstNum.equalsIgnoreCase("9")) {
 				isvisited = isVisted(msisdn);
