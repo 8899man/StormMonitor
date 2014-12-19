@@ -34,36 +34,10 @@ public class SoftDelayRatio extends BaseRichBolt {
 	private String tableName;
 	private DB db = new DB();
 	private static final int[] REGION = { 300, 500, 1000, 3000 };
-	private static final Map<String, Region> SPECIALREG = new HashMap<String, Region>();
-	private static final String[] PAGE = { "authenticate4", "searchContent",
-			"getContentInfo", "subscribeContent2" };
-	private static final Set<String> PAGESET = new HashSet<String>();
 	static Logger log = Logger.getLogger(SoftDelayRatio.class);
 
 	public SoftDelayRatio(String tableName) {
 		this.tableName = tableName;
-		ArrayList<Region> sps = new ArrayList<Region>(4);
-		for (int i = 0; i < 4; i++) {
-			sps.add(new Region());
-		}
-		for (int i = 0; i < 4; i++) {
-			sps.get(0).reg[i] = (int) (REGION[i] / 0.45);
-			sps.get(1).reg[i] = (int) (REGION[i] / 0.9);
-			sps.get(2).reg[i] = (int) (REGION[i] / 0.6);
-			sps.get(3).reg[i] = (int) (REGION[i] / 0.9);
-		}
-		for (int i = 0; i < 4; i++) {
-			SPECIALREG.put(PAGE[i], sps.get(i));
-			PAGESET.add(PAGE[i]);
-		}
-	}
-
-	class Region {
-		int[] reg;
-
-		Region() {
-			reg = new int[4];
-		}
 	}
 
 	public void prepare(Map stormConf, TopologyContext context,
@@ -90,11 +64,7 @@ public class SoftDelayRatio extends BaseRichBolt {
 			}
 			beartype = build(beartype.trim());
 			String key = pageName + "|" + beartype;
-			if (PAGESET.contains(pageName)) {
-				countSpecial(pageName, key, delay, delaySum);
-			} else {
-				countDelay(key, delay, delaySum);
-			}
+			countDelay(key, delay, delaySum);
 		} catch (IllegalArgumentException e) {
 			if (input.getSourceStreamId().equals(StreamId.SIGNAL15MIN.name())) {
 				String timePeriod = input.getStringByField(FName.ACTION15MIN
@@ -106,23 +76,6 @@ public class SoftDelayRatio extends BaseRichBolt {
 			log.error("Error", e);
 		}
 		collector.ack(input);
-	}
-
-	private void countSpecial(String pageName, String key, int delay,
-			Map<String, Area> delaySum) {
-		Area area = getDelay(key, delaySum);
-		Region region = SPECIALREG.get(pageName);
-		if (delay < region.reg[0])
-			area.a[0] += delay;
-		else if (delay < region.reg[1])
-			area.a[1] += delay;
-		else if (delay < region.reg[2])
-			area.a[2] += delay;
-		else if (delay < region.reg[3])
-			area.a[3] += delay;
-		else
-			area.a[4] += delay;
-		delaySum.put(key, area);
 	}
 
 	private String build(String beartype) {
