@@ -34,6 +34,7 @@ public class WapDelayRatio extends BaseRichBolt {
 	private String tableName;
 	private DB db = new DB();
 	private static final int[] REGION = { 300, 500, 1000, 3000 };
+	private static final int MAXDELAY = 10000;
 	static Logger log = Logger.getLogger(WapDelayRatio.class);
 
 	public WapDelayRatio(String tableName) {
@@ -86,6 +87,8 @@ public class WapDelayRatio extends BaseRichBolt {
 	}
 
 	private void countDelay(String key, int delay, Map<String, Area> delaySum) {
+		if (delay >= MAXDELAY)
+			return;
 		Area area = getDelay(key, delaySum);
 		if (delay < REGION[0])
 			area.a[0] += delay;
