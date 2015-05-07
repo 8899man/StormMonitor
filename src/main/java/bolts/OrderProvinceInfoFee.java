@@ -20,8 +20,8 @@ public class OrderProvinceInfoFee extends BaseRichBolt {
 
 	private static final long serialVersionUID = 1L;
 	OutputCollector collector;
-	Map<String, Integer> provinceTimeInfoFee = new HashMap<String, Integer>();
-	Map<String, Integer> provinceMonthInfoFee = new HashMap<String, Integer>();
+	Map<String, Long> provinceTimeInfoFee = new HashMap<String, Long>();
+	Map<String, Long> provinceMonthInfoFee = new HashMap<String, Long>();
 	static Logger log = Logger.getLogger(OrderProvinceInfoFee.class);
 
 	public void prepare(Map stormConf, TopologyContext context,
@@ -58,23 +58,23 @@ public class OrderProvinceInfoFee extends BaseRichBolt {
 			inforFee = Integer.valueOf(realInforFee);
 		}
 		if ((type == 4) || (type == 5)) {
-			Integer inforFeeCurrent = calculateInforFee(province_id, inforFee,
+			Long inforFeeCurrent = calculateInforFee(province_id, inforFee,
 					provinceMonthInfoFee);
 			provinceMonthInfoFee.put(province_id, inforFeeCurrent);
 			collector.emit(new Values(orderType, province_id, inforFeeCurrent));
 		} else {
-			Integer inforFeeCurrent = calculateInforFee(province_id, inforFee,
+			Long inforFeeCurrent = calculateInforFee(province_id, inforFee,
 					provinceTimeInfoFee);
 			provinceTimeInfoFee.put(province_id, inforFeeCurrent);
 			collector.emit(new Values(orderType, province_id, inforFeeCurrent));
 		}
 	}
 
-	private Integer calculateInforFee(String province_id, int inforFee,
-			Map<String, Integer> infoFeeMap) {
-		Integer inforFeeCurrent = infoFeeMap.get(province_id);
+	private Long calculateInforFee(String province_id, int inforFee,
+			Map<String, Long> infoFeeMap) {
+		Long inforFeeCurrent = infoFeeMap.get(province_id);
 		if (inforFeeCurrent == null) {
-			inforFeeCurrent = 0;
+			inforFeeCurrent = 0l;
 		}
 		inforFeeCurrent += inforFee;
 		return inforFeeCurrent;

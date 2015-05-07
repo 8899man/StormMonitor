@@ -19,8 +19,8 @@ public class OrderTotalInfoFeeDB extends BaseRichBolt {
 
 	private static final long serialVersionUID = 1L;
 	OutputCollector collector;
-	static Integer timeOrderFee = new Integer(0);
-	static Integer monthOrderFee = new Integer(0);
+	static Long timeOrderFee = 0l;
+	static Long monthOrderFee = 0l;
 	private String tableNameByTime;
 	private String tableNameByMonth;
 	private DB db = new DB();
@@ -43,7 +43,7 @@ public class OrderTotalInfoFeeDB extends BaseRichBolt {
 		} catch (IllegalArgumentException e) {
 		}
 		if (orderType != null) {
-			Integer orderFee = input.getIntegerByField(FName.REALINFORFEE
+			Long orderFee = input.getLongByField(FName.REALINFORFEE
 					.name());
 			int type = 0;
 			if (!orderType.equalsIgnoreCase("")) {
@@ -62,8 +62,8 @@ public class OrderTotalInfoFeeDB extends BaseRichBolt {
 			} else if (input.getSourceStreamId().equals(
 					StreamId.SIGNAL24H.name())) {
 				log.info("24Hour is coming.");
-				timeOrderFee = 0;
-				monthOrderFee = 0;
+				timeOrderFee = 0l;
+				monthOrderFee = 0l;
 			}
 		}
 		collector.ack(input);

@@ -19,8 +19,8 @@ public class OrderTotalInfoFee extends BaseRichBolt {
 
 	private static final long serialVersionUID = 1L;
 	OutputCollector collector;
-	static Integer timeOrderFee = 0;
-	static Integer monthOrderFee = 0;
+	static Long timeOrderFee = 0l;
+	static Long monthOrderFee = 0l;
 	static Logger log = Logger.getLogger(OrderTotalInfoFee.class);
 
 	public void prepare(Map stormConf, TopologyContext context,
@@ -37,8 +37,8 @@ public class OrderTotalInfoFee extends BaseRichBolt {
 		} catch (IllegalArgumentException e) {
 			if (input.getSourceStreamId().equals(StreamId.SIGNAL24H.name())) {
 				log.info("24Hour is coming.");
-				timeOrderFee = 0;
-				monthOrderFee = 0;
+				timeOrderFee = 0l;
+				monthOrderFee = 0l;
 			}
 		}
 		collector.ack(input);

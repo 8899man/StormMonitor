@@ -20,8 +20,8 @@ public class OrderProvinceInfoFeeDB extends BaseRichBolt {
 
 	private static final long serialVersionUID = 1L;
 	OutputCollector collector;
-	Map<String, Integer> provinceTimeInfoFee = new HashMap<String, Integer>();
-	Map<String, Integer> provinceMonthInfoFee = new HashMap<String, Integer>();
+	Map<String, Long> provinceTimeInfoFee = new HashMap<String, Long>();
+	Map<String, Long> provinceMonthInfoFee = new HashMap<String, Long>();
 	private String tableNameByTime;
 	private String tableNameByMonth;
 	private DB db = new DB();
@@ -45,8 +45,8 @@ public class OrderProvinceInfoFeeDB extends BaseRichBolt {
 		} catch (IllegalArgumentException e) {
 		}
 		if (orderType != null) {
-			Integer inforFeeCurrent = input
-					.getIntegerByField(FName.REALINFORFEE.name());
+			Long inforFeeCurrent = input
+					.getLongByField(FName.REALINFORFEE.name());
 			String province_id = input.getStringByField(FName.PROVINCE_ID
 					.name());
 			int type = 0;
@@ -72,11 +72,11 @@ public class OrderProvinceInfoFeeDB extends BaseRichBolt {
 
 	private void downloadToDB(String timePeriod) {
 
-		for (Map.Entry<String, Integer> entry : provinceTimeInfoFee.entrySet()) {
+		for (Map.Entry<String, Long> entry : provinceTimeInfoFee.entrySet()) {
 			db.insertUser(tableNameByTime, timePeriod, entry.getKey(), entry
 					.getValue().toString());
 		}
-		for (Map.Entry<String, Integer> entry : provinceMonthInfoFee.entrySet()) {
+		for (Map.Entry<String, Long> entry : provinceMonthInfoFee.entrySet()) {
 			db.insertUser(tableNameByMonth, timePeriod, entry.getKey(), entry
 					.getValue().toString());
 		}
