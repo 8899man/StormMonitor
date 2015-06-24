@@ -38,7 +38,7 @@ public class WapUserCleanForSoft extends BaseRichBolt {
 			Boolean accType = input.getStringByField(FName.ACCESSTYPE.name())
 					.trim().equalsIgnoreCase("16");
 			Boolean isMM = ismm(terminal);
-			if (accType && (!isMM)) {
+			if (accType && (!isMM) && (msisdn.length() >= 1)) {
 				String firstNum = msisdn.substring(0, 1);
 				Boolean isvisited;
 				if (!firstNum.equalsIgnoreCase("9")) {

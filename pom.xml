@@ -62,7 +62,7 @@
 			<artifactId>storm</artifactId>
 			<version>0.8.1</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>oracle</groupId>
 			<artifactId>ojdbc</artifactId>
