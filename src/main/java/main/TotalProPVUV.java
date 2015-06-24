@@ -160,7 +160,7 @@ public class TotalProPVUV {
 				.allGrouping(ID.signal24H.name(), StreamId.SIGNAL24H.name());
 
 		Config conf = new Config();
-		conf.setNumWorkers(12);
+		conf.setNumWorkers(8);
 		StormSubmitter.submitTopology(StormConf.TOTALTOPO, conf,
 				builder.createTopology());
 	}

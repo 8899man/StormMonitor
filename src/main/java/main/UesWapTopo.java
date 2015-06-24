@@ -124,7 +124,7 @@ public class UesWapTopo {
 				.allGrouping(ID.signal15m.name(), StreamId.SIGNAL15MIN.name());
 
 		Config conf = new Config();
-		conf.setNumWorkers(10);
+		conf.setNumWorkers(8);
 		StormSubmitter.submitTopology(StormConf.UESTOPO, conf,
 				builder.createTopology());
 	}

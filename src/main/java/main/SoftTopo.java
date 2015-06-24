@@ -190,7 +190,7 @@ public class SoftTopo {
 				.allGrouping(ID.signal24H.name(), StreamId.SIGNAL24H.name());
 
 		Config conf = new Config();
-		conf.setNumWorkers(14);
+		conf.setNumWorkers(8);
 		StormSubmitter.submitTopology(StormConf.SOFTTOPO, conf,
 				builder.createTopology());
 	}

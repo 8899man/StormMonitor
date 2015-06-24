@@ -164,7 +164,7 @@ public class OrderTopoV2 {
 				.allGrouping(ID.signal24H.name(), StreamId.SIGNAL24H.name());
 
 		Config conf = new Config();
-		conf.setNumWorkers(11);
+		conf.setNumWorkers(8);
 		StormSubmitter.submitTopology(StormConf.ORDTOPO, conf,
 				builder.createTopology());
 	}
